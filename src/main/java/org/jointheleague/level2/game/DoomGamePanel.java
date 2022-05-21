@@ -1,8 +1,6 @@
 package org.jointheleague.level2.game;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -14,63 +12,50 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
     int s_GAME = 1;
     int s_END = 2;
     int bulletVelocity = 30;
-    Timer timer = new Timer(133, this);
+    Timer timer = new Timer(20, this);
     Font titleFont;
     Font otherFont;
     int playerX = 800;
     int playerY = 450;
     int playerWidth = 25;
-    int playerVelocityX = 0;
-    int playerVelocityY = 0;
     int distanceX;
-    int distanceY;
+    int distanceY; //267, 80 ,1066, 700
+    public static int gameTop = 80;
+    public static int gameRight = 1333;
+    public static int gameLeft = 267;
+    public static int gameBottom = 780;
+    int gameWidth = 1066;
+    int gameHeight = 700;
+    private Player player = new Player(playerX, playerY, playerWidth, playerWidth);
+    private ObjectManager objectManager = new ObjectManager(player);
+
 
     public DoomGamePanel() {
         this.timer.start();
         addMouseListener(this);
     }
 
+    @Override
     public void keyTyped(KeyEvent e) {
-    }
 
-    public void checkBarriers(){
-        if (playerX<=267) {
-            playerX+=10;
-            playerVelocityX = 0;
-        }if (playerX>=1333-playerWidth){
-            playerX-=10;
-            playerVelocityX = 0;
-        }if (playerY<=80){
-            playerY+=10;
-            playerVelocityY = 0;
-        }if (playerY>=780-playerWidth){
-            playerY-=10;
-            playerVelocityY = 0;
-        }
-    }
-
-    public void movement(){
-        playerX+=playerVelocityX;
-        playerY+=playerVelocityY;
-        checkBarriers();
     }
 
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == VK_W) {
-            playerVelocityY = -10;
+            player.up();
         }
         if (e.getKeyCode() == VK_A) {
-            playerVelocityX = -10;
+            player.left();
         }
         if (e.getKeyCode() == VK_S) {
-            playerVelocityY = 10;
+            player.down();
         }
         if (e.getKeyCode() == VK_D) {
-            playerVelocityX = 10;
+            player.right();
         }
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            if(currentState==s_MENU) {
+            if (currentState == s_MENU) {
                 JOptionPane.showMessageDialog(null, "Use WASD keys to move, Kill enemies, pick up loot, escape the maze.");
             }
         }
@@ -85,20 +70,22 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
 
     }
 
+    @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == VK_W) {
-            playerVelocityY = 0;
+            player.releaseY();
         }
         if (e.getKeyCode() == VK_A) {
-            playerVelocityX = 0;
+            player.releaseX();
         }
         if (e.getKeyCode() == VK_S) {
-            playerVelocityY = 0;
+            player.releaseY();
         }
         if (e.getKeyCode() == VK_D) {
-            playerVelocityX = 0;
+            player.releaseX();
         }
     }
+
 
     public void paintComponent(Graphics g) {
         this.titleFont = new Font("Arial", 0, 40);
@@ -128,16 +115,18 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, 1600, 900);
         g.setColor(Color.DARK_GRAY);
-        g.fillRect(267, 80 ,1066, 700);
+        g.fillRect(gameLeft, gameTop, gameWidth, gameHeight);
         g.setColor(Color.WHITE);
         g.setFont(this.titleFont);
         g.drawString("Doom 2D", 715, 60);
-        g.setColor(Color.ORANGE);
-        g.fillOval(playerX,playerY,playerWidth,playerWidth);
+//        player.movement();
+        player.draw(g);
+        //g.setColor(Color.ORANGE);
+        //g.fillOval(playerX,playerY,playerWidth,playerWidth);
         g.setColor(Color.white);
-        movement();
         //g.drawPolygon(new int[] {10, 20, 30}, new int[] {100, 20, 100}, 3);
-
+//        p = MouseInfo.getPointerInfo().getLocation();
+//        g.drawLine(playerX+(playerWidth/2),playerY+(playerWidth/2), p.x-10, p.y-30);
 
     }
 
@@ -178,7 +167,7 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
     private void updateMenuState() {
     }
 
-    public void screen(){
+    public void screen() {
 
     }
 
@@ -189,17 +178,17 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(currentState==s_GAME){
+        if (currentState == s_GAME) {
             distanceX = e.getX() - playerX;
             distanceY = e.getY() - playerY;
             bullet(distanceX, distanceY);
         }
     }
 
-    public void bullet(int distanceX, int distanceY){
-        //distanceX / 4;
-        //distanceY / 4;
+    public void bullet(int distanceX, int distanceY) {
+
     }
+
     @Override
     public void mouseReleased(MouseEvent e) {
 
