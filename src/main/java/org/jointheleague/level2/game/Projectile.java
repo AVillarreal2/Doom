@@ -1,18 +1,22 @@
 package org.jointheleague.level2.game;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Projectile extends GameObject {
-    Point p = MouseInfo.getPointerInfo().getLocation();
     public Projectile(int x, int y, int width, int height) {
         super(x, y, width, height);
-        speed = 10;
+        speed = 20;
     }
+
     void draw(Graphics g) {
-        p = MouseInfo.getPointerInfo().getLocation();
-        g.drawLine(x+(width/2),y+(width/2), p.x-10, p.y-30);
+        Point p = MouseInfo.getPointerInfo().getLocation();
+        g.setColor(Color.RED);
+        g.fillRect(x, y, width+5, height+5);
     }
 
     void update() {
+        super.update();
+        x+=speed;
     }
 }

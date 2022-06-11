@@ -18,6 +18,9 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
     int playerX = 800;
     int playerY = 450;
     int playerWidth = 25;
+    int projectileX = playerX;
+    int projectileY = playerY;
+    int projectileWidth = 2;
     int distanceX;
     int distanceY; //267, 80 ,1066, 700
     public static int gameTop = 80;
@@ -121,8 +124,9 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
         g.drawString("Doom 2D", 715, 60);
 //        player.movement();
         player.draw(g);
+        objectManager.draw(g);
         //g.setColor(Color.ORANGE);
-        //g.fillOval(playerX,playerY,playerWidth,playerWidth);
+        //g.fillOval(playerX,play   erY,playerWidth,playerWidth);
         g.setColor(Color.white);
         //g.drawPolygon(new int[] {10, 20, 30}, new int[] {100, 20, 100}, 3);
 //        p = MouseInfo.getPointerInfo().getLocation();
@@ -162,6 +166,11 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
     }
 
     private void updateGameState() {
+        if(!player.isActive) {
+            currentState=s_END;
+            return;
+        }
+        objectManager.update();
     }
 
     private void updateMenuState() {
@@ -173,21 +182,15 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        if(e.getButton()==MouseEvent.BUTTON1&&currentState==s_GAME){
+            objectManager.addProjectile(player.getProjectile());
+        }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (currentState == s_GAME) {
-            distanceX = e.getX() - playerX;
-            distanceY = e.getY() - playerY;
-            bullet(distanceX, distanceY);
-        }
     }
 
-    public void bullet(int distanceX, int distanceY) {
-
-    }
 
     @Override
     public void mouseReleased(MouseEvent e) {

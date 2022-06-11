@@ -5,6 +5,7 @@ import java.awt.*;
 public class Player extends GameObject {
     int velocityX = 0;
     int velocityY = 0;
+//    Point p = MouseInfo.getPointerInfo().getLocation();
 
     public Player(int x, int y, int width, int height) {
         super(x, y, width, height);
@@ -15,12 +16,13 @@ public class Player extends GameObject {
         update();
         g.setColor(Color.ORANGE);
         g.fillOval(x, y, width, height);
+        drawLaser(g);
     }
 
     void update() {
-        checkBorders();
         x += velocityX;
         y += velocityY;
+        checkBorders();
     }
 
     public void checkBorders() {
@@ -28,7 +30,9 @@ public class Player extends GameObject {
             x = DoomGamePanel.gameRight - width;
         } else if (x <= DoomGamePanel.gameLeft) {
             x = DoomGamePanel.gameLeft;
-        } else if (y <= DoomGamePanel.gameTop) {
+        }
+
+        if (y <= DoomGamePanel.gameTop) {
             y = DoomGamePanel.gameTop;
         } else if (y >= DoomGamePanel.gameBottom - height) {
             y = DoomGamePanel.gameBottom - height;
@@ -59,5 +63,12 @@ public class Player extends GameObject {
         velocityY = 0;
     }
 
+    void drawLaser(Graphics g) {
+        Point p = MouseInfo.getPointerInfo().getLocation();
+        g.drawLine(x + (width/2), y + (width/2), p.x-10, p.y-30);
+    }
 
+    public Projectile getProjectile() {
+        return new Projectile(x+width/2, y, 10, 10);
+    }
 }
