@@ -16,7 +16,7 @@ public class Player extends GameObject {
         update();
         g.setColor(Color.ORANGE);
         g.fillOval(x, y, width, height);
-        drawLaser(g);
+//        drawLaser(g);
     }
 
     void update() {
@@ -25,19 +25,19 @@ public class Player extends GameObject {
         checkBorders();
     }
 
-    public void checkBorders() {
-        if (x >= DoomGamePanel.gameRight - width) {
-            x = DoomGamePanel.gameRight - width;
-        } else if (x <= DoomGamePanel.gameLeft) {
-            x = DoomGamePanel.gameLeft;
-        }
-
-        if (y <= DoomGamePanel.gameTop) {
-            y = DoomGamePanel.gameTop;
-        } else if (y >= DoomGamePanel.gameBottom - height) {
-            y = DoomGamePanel.gameBottom - height;
-        }
-    }
+//    public void checkBorders() {
+//        if (x >= DoomGamePanel.gameRight - width) {
+//            x = DoomGamePanel.gameRight - width;
+//        } else if (x <= DoomGamePanel.gameLeft) {
+//            x = DoomGamePanel.gameLeft;
+//        }
+//
+//        if (y <= DoomGamePanel.gameTop) {
+//            y = DoomGamePanel.gameTop;
+//        } else if (y >= DoomGamePanel.gameBottom - height) {
+//            y = DoomGamePanel.gameBottom - height;
+//        }
+//    }
 
     public void left() {
         velocityX = -speed;
@@ -63,10 +63,10 @@ public class Player extends GameObject {
         velocityY = 0;
     }
 
-    void drawLaser(Graphics g) {
-        Point p = MouseInfo.getPointerInfo().getLocation();
-        g.drawLine(x + (width/2), y + (width/2), p.x-10, p.y-30);
-    }
+//    void drawLaser(Graphics g) {
+//        Point p = MouseInfo.getPointerInfo().getLocation();
+//        g.drawLine(x + (width/2), y + (width/2), p.x-10, p.y-30);
+//    }
 
     public Projectile getProjectile() {
         return new Projectile(x+width/2, y, 10, 10);

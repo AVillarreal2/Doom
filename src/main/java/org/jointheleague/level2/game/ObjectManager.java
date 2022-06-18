@@ -1,14 +1,27 @@
 package org.jointheleague.level2.game;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
-public class ObjectManager {
+import static org.jointheleague.level2.game.DoomGamePanel.gameRight;
+
+public class ObjectManager implements ActionListener {
     Player player;
+    int score = 0;
     public ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+    public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+    private Random random = new Random();
 
     public ObjectManager(Player player) {
         this.player = player;
+    }
+
+    void addEnemy() {
+        enemies.add(new Enemy(gameRight, random.nextInt(Doom.doomFrameHEIGHT), 50, 50));
+        System.out.println("number of enemies = " + enemies.size());
     }
 
     public void addProjectile(Projectile projectile) {
@@ -17,11 +30,15 @@ public class ObjectManager {
 
     void update(){
         updateProjectiles();
+        purgeObjects();
     }
 
-    void draw(Graphics g){
-        for (Projectile projectile : projectiles) {
-            projectile.draw(g);
+    private void updateEnemies() {
+        for (Enemy enemy : enemies) {
+            enemy.update();
+            if (enemy.y > gameRight) {
+                enemy.isActive = false;
+            }
         }
     }
 
@@ -29,9 +46,69 @@ public class ObjectManager {
         for (Projectile projectile : projectiles) {
             projectile.update();
             System.out.println("updating");
-            if (projectile.x > DoomGamePanel.gameRight) {
+            if (projectile.x > gameRight-10) {
                 projectile.isActive = false;
             }
         }
+    }
+
+    private void updatePlayer(){
+        player.update();
+    }
+
+    void draw(Graphics g){
+        for (Projectile projectile : projectiles) {
+            projectile.draw(g);
+        }
+        for (Enemy enemy : enemies) {
+            enemy.draw(g);
+        }
+    }
+
+
+
+    void purgeObjects() {
+//        if (enemies.isEmpty()) {
+//            return;
+//        }
+//        for (int i = 0; i < enemies.size(); i++) {
+//            if (!enemies.get(i).isActive) {
+//                enemies.remove(i);
+//                System.out.println("removing alien #" + i);
+//            }
+//        }
+        for (int i = 0; i < projectiles.size(); i++) {
+            if (!projectiles.get(i).isActive) {
+                projectiles.remove(i);
+            }
+        }
+    }
+
+    void checkCollision() {
+//        //for (Alien alien : aliens) {
+//        for (int i = 0; i < aliens.size(); i++) {
+//            Alien alien = aliens.get(i);
+//            if (!player.isActive) {
+//                return;
+//            }
+//            if (alien.collisionBox.intersects(player.collisionBox)) {
+//                alien.isActive = false;
+//                player.isActive = false;
+//                System.out.println("killed by alien number " + i);
+//                return;
+//            }
+//            for (Projectile projectile : projectiles) {
+//                if (alien.collisionBox.intersects(projectile.collisionBox)) {
+//                    projectile.isActive = false;
+//                    alien.isActive = false;
+////                  setScore(getScore() + 1);
+//                }
+//            }
+//        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        addEnemy();
     }
 }

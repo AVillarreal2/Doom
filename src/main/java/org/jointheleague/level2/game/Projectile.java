@@ -11,12 +11,16 @@ public class Projectile extends GameObject {
 
     void draw(Graphics g) {
         Point p = MouseInfo.getPointerInfo().getLocation();
-        g.setColor(Color.RED);
+        g.setColor(Color.GREEN);
         g.fillRect(x, y, width+5, height+5);
     }
 
     void update() {
         super.update();
         x+=speed;
+    //checkBorders();
+//        if(x>DoomGamePanel.gameRight) {
+//            projectile
+//        }
     }
 }

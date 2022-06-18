@@ -12,7 +12,8 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
     int s_GAME = 1;
     int s_END = 2;
     int bulletVelocity = 30;
-    Timer timer = new Timer(20, this);
+    Timer enemySpawn;
+    Timer frameDraw;
     Font titleFont;
     Font otherFont;
     int playerX = 800;
@@ -34,7 +35,8 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
 
 
     public DoomGamePanel() {
-        this.timer.start();
+        frameDraw = new Timer(20, this);
+        frameDraw.start();
         addMouseListener(this);
     }
 
@@ -68,6 +70,9 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
                 this.currentState = this.s_MENU;
             } else {
                 ++this.currentState;
+                if(currentState==s_GAME) {
+                    startGame();
+                }
             }
         }
 
@@ -210,6 +215,15 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
     @Override
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
+    }
+
+    void startGame() {
+        if (currentState == s_GAME) {
+            enemySpawn = new Timer(1000, objectManager);
+            enemySpawn.start();
+        } else if (currentState == s_END) {
+            enemySpawn.stop();
+        }
     }
 }
 
