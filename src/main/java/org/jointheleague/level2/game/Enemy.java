@@ -10,7 +10,7 @@ public class Enemy extends GameObject{
 
     void update() {
         super.update();
-        y+=speed;
+        x-=speed;
     }
 
     void draw(Graphics g) {

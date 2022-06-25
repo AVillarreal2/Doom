@@ -68,6 +68,8 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             if (this.currentState == this.s_END) {
                 this.currentState = this.s_MENU;
+//                objectManager = new ObjectManager(player);
+//                startGame();
             } else {
                 ++this.currentState;
                 if(currentState==s_GAME) {
@@ -147,7 +149,7 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
         g.drawString("Game Over", 695, 150);
         g.setColor(Color.WHITE);
         g.setFont(this.otherFont);
-        g.drawString("Your Total Score was: ", 600, 500);
+        g.drawString("Your Total Score was: " + objectManager.getScore(), 600, 500);
     }
 
     public void actionPerformed(ActionEvent e) {

@@ -20,6 +20,7 @@ public class Player extends GameObject {
     }
 
     void update() {
+        super.update();
         x += velocityX;
         y += velocityY;
         checkBorders();
