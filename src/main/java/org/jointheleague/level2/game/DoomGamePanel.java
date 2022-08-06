@@ -64,17 +64,32 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
                 JOptionPane.showMessageDialog(null, "Use WASD keys to move, Kill enemies, pick up loot, escape the maze.");
             }
         }
-
+        //TODO CREATE A NEW PLAYER WHEN ENDING THE GAME AND PASS IT INTO THE OBJECT MANAGER
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             if (this.currentState == this.s_END) {
                 this.currentState = this.s_MENU;
-//                objectManager = new ObjectManager(player);
-//                startGame();
-            } else {
-                ++this.currentState;
-                if(currentState==s_GAME) {
-                    startGame();
-                }
+
+                player = new Player(playerX, playerY, playerWidth, playerWidth);
+                objectManager = new ObjectManager(player);
+                System.out.println("currentState a" + this.currentState);
+            } else if (this.currentState == this.s_MENU) {
+                this.currentState++;
+                startGame();
+            } else if (this.currentState == this.s_GAME) {
+                this.currentState++;
+                enemySpawn.stop();
+
+//                System.out.println("currentState b" + this.currentState);
+//                if(this.currentState==this.s_GAME) {
+//                    System.out.println("currentState c " + this.currentState);
+//                }
+//                else if (this.currentState == this.s_END) {
+//                    System.out.println("ending game");
+//                    enemySpawn.stop();
+//                    for (Enemy enemy : objectManager.enemies) {
+//
+//                    }
+//                }
             }
         }
 
@@ -155,17 +170,13 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
     public void actionPerformed(ActionEvent e) {
         if (this.currentState == this.s_MENU) {
             this.updateMenuState();
-
         }
-
         if (this.currentState == this.s_GAME) {
             this.updateGameState();
         }
-
         if (this.currentState == this.s_END) {
             this.updateEndState();
         }
-
         this.repaint();
     }
 
@@ -173,8 +184,8 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
     }
 
     private void updateGameState() {
-        if(!player.isActive) {
-            currentState=s_END;
+        if (!player.isActive) {
+            currentState = s_END;
             return;
         }
         objectManager.update();
@@ -189,7 +200,7 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(e.getButton()==MouseEvent.BUTTON1&&currentState==s_GAME){
+        if (e.getButton() == MouseEvent.BUTTON1 && currentState == s_GAME) {
             objectManager.addProjectile(player.getProjectile());
         }
     }
@@ -223,8 +234,7 @@ public class DoomGamePanel extends JPanel implements ActionListener, KeyListener
         if (currentState == s_GAME) {
             enemySpawn = new Timer(1000, objectManager);
             enemySpawn.start();
-        } else if (currentState == s_END) {
-            enemySpawn.stop();
+            System.out.println("starting game");
         }
     }
 }

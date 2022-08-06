@@ -21,15 +21,15 @@ public class ObjectManager implements ActionListener {
     }
 
     void addEnemy() {
-        enemies.add(new Enemy(gameRight-50, random.nextInt(Doom.doomFrameHEIGHT-250)+80, 50, 50));
-        System.out.println("number of enemies = " + enemies.size());
+        enemies.add(new Enemy(gameRight - 50, random.nextInt(Doom.doomFrameHEIGHT - 250) + 80, 50, 50));
+//        System.out.println("number of enemies = " + enemies.size());
     }
 
     public void addProjectile(Projectile projectile) {
         projectiles.add(projectile);
     }
 
-    void update(){
+    void update() {
         updateProjectiles();
         updateEnemies();
         checkCollision();
@@ -49,17 +49,17 @@ public class ObjectManager implements ActionListener {
         for (Projectile projectile : projectiles) {
             projectile.update();
             System.out.println("updating");
-            if (projectile.x > gameRight-10) {
+            if (projectile.x > gameRight - 10) {
                 projectile.isActive = false;
             }
         }
     }
 
-    private void updatePlayer(){
+    private void updatePlayer() {
         player.update();
     }
 
-    void draw(Graphics g){
+    void draw(Graphics g) {
         for (Projectile projectile : projectiles) {
             projectile.draw(g);
         }
@@ -67,7 +67,6 @@ public class ObjectManager implements ActionListener {
             enemy.draw(g);
         }
     }
-
 
 
     void purgeObjects() {
@@ -103,7 +102,7 @@ public class ObjectManager implements ActionListener {
                 if (enemy.collisionBox.intersects(projectile.collisionBox)) {
                     projectile.isActive = false;
                     enemy.isActive = false;
-                  setScore(getScore() + 1);
+                    setScore(getScore() + 1);
                 }
             }
         }
